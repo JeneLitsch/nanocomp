@@ -5,7 +5,7 @@
 #include <bitset>
 #include <unordered_map>
 
-namespace ecs {
+namespace nc {
 	template<typename ... Components>
 	class Ecs;
 
