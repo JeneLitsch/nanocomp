@@ -4,6 +4,7 @@
 #include <tuple>
 #include <bitset>
 #include <unordered_map>
+#include <iostream>
 
 namespace nc {
 	template<typename ... Components>
@@ -31,7 +32,7 @@ namespace nc {
 
 		template<typename Component>
 		void add(Component component) {
-			this->at<Component>() = std::make_unique<Component>(component);
+			this->at<Component>() = std::make_unique<Component>(std::move(component));
 		}
 
 
@@ -99,9 +100,11 @@ namespace nc {
 		friend Entity<Components...>;
 	public:
 		using Entity = Entity<Components...>;
+		Ecs(std::uint64_t start_id = 0) : next_id{start_id} {}
 
 		Entity & new_entity() {
 			const auto id = next_id++;
+			std::cout << "NEW ENTITY: " << id << "\n";
 			this->entities.push_back(std::make_unique<Entity>(id, *this));
 			this->by_id[id] = this->entities.back().get();
 			return *this->entities.back();
@@ -147,6 +150,6 @@ namespace nc {
 	private:
 		std::vector<std::unique_ptr<Entity>> entities;
 		std::unordered_map<std::uint64_t, Entity *> by_id;
-		std::uint64_t next_id = 0;
+		std::uint64_t next_id;
 	};
 }
