@@ -56,6 +56,14 @@ namespace nc {
 		}
 
 
+		
+		template<typename Component>
+		const Component * get_if() const {
+			if(this->has<Component>()) return this->at<Component>().get();
+			return nullptr;
+		}
+
+
 
 		template<typename Component>
 		bool has() const {
@@ -112,8 +120,15 @@ namespace nc {
 
 
 
-		Entity & get_by_id(std::uint64_t id) {
+		Entity & get(std::uint64_t id) {
 			return *this->by_id[id];
+		}
+
+
+
+		Entity * get_if(std::uint64_t id) {
+			if(this->contains(id)) return this->by_id[id];
+			return nullptr;
 		}
 
 
