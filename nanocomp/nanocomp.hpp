@@ -31,8 +31,10 @@ namespace nc {
 
 
 		template<typename Component>
-		void add(Component component) {
-			this->at<Component>() = std::make_unique<Component>(std::move(component));
+		Component & add(Component component) {
+			auto & c = this->at<Component>(); 
+			c = std::make_unique<Component>(std::move(component));
+			return *c;
 		}
 
 
@@ -47,6 +49,15 @@ namespace nc {
 		template<typename Component>
 		Component & get() {
 			return *this->at<Component>();
+		}
+
+
+		
+		template<typename Component>
+		Component * get_if() {
+			if(this->has<Component>()) return this->at<Component>().get();
+			return nullptr;
+		
 		}
 
 
@@ -156,6 +167,13 @@ namespace nc {
 		void run_system(auto && system) {
 			for(auto & entity : this->entities) {
 				system(*entity);
+			}
+		}
+
+
+		void run_system(auto && system) const {
+			for(auto & entity : this->entities) {
+				system(std::as_const(*entity));
 			}
 		}
 
