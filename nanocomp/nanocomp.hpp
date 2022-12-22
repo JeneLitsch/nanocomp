@@ -136,6 +136,12 @@ namespace nc {
 
 
 
+		const Entity & get(std::uint64_t id) const {
+			return *this->by_id[id];
+		}
+
+
+
 		Entity * get_if(std::uint64_t id) {
 			if(this->contains(id)) return this->by_id[id];
 			return nullptr;
@@ -173,6 +179,19 @@ namespace nc {
 		void run_system(auto && system) const {
 			for(auto & entity : this->entities) {
 				system(std::as_const(*entity));
+			}
+		}
+
+		void run_system_for(auto & order, auto && system) {
+			for(auto & id : order) {
+				system(get(id));
+			}
+		}
+
+
+		void run_system_for(auto & order, auto && system) const {
+			for(auto & id : order) {
+				system(std::as_const(get(id)));
 			}
 		}
 
