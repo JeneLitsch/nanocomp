@@ -123,7 +123,6 @@ namespace nc {
 
 		Entity & new_entity() {
 			const auto id = next_id++;
-			std::cout << "NEW ENTITY: " << id << "\n";
 			this->entities.push_back(std::make_unique<Entity>(id, *this));
 			this->by_id[id] = this->entities.back().get();
 			return *this->entities.back();
