@@ -131,13 +131,13 @@ namespace nc {
 
 
 		Entity & get(std::uint64_t id) {
-			return *this->by_id[id];
+			return *this->by_id.at(id);
 		}
 
 
 
 		const Entity & get(std::uint64_t id) const {
-			return *this->by_id[id];
+			return *this->by_id.at(id);
 		}
 
 
