@@ -121,6 +121,11 @@ namespace nc {
 		using Entity = Entity<Components...>;
 		Ecs(std::uint64_t start_id = 0) : next_id{start_id} {}
 
+		Ecs(const Ecs &) = delete;
+		Ecs & operator=(const Ecs &) = delete;
+		Ecs(Ecs &&) = delete;
+		Ecs & operator=(Ecs &&) = delete;
+
 		Entity & new_entity() {
 			const auto id = next_id++;
 			this->entities.push_back(std::make_unique<Entity>(id, *this));
