@@ -5,6 +5,8 @@
 #include <bitset>
 #include <unordered_map>
 #include <iostream>
+#include <utility>
+#include <algorithm>
 
 namespace nc {
 	template<typename ... Components>
