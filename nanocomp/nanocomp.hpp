@@ -13,16 +13,16 @@ namespace nc {
 	class Ecs;
 
 	template<typename ... Components>
-	class Entity {	
+	class EntityImpl {	
 	public:
-		Entity(const Entity &) = delete;
-		Entity(Entity &&) = delete;
+		EntityImpl(const EntityImpl &) = delete;
+		EntityImpl(EntityImpl &&) = delete;
 
-		Entity & operator=(const Entity &) = delete;
-		Entity & operator=(Entity &&) = delete;
+		EntityImpl & operator=(const EntityImpl &) = delete;
+		EntityImpl & operator=(EntityImpl &&) = delete;
 
-		Entity(std::uint64_t id, Ecs<Components...> & ecs) : id {id}, ecs{ecs} {}
-		~Entity() {
+		EntityImpl(std::uint64_t id, Ecs<Components...> & ecs) : id {id}, ecs{ecs} {}
+		~EntityImpl() {
 			ecs.by_id.erase(this->id);
 		}
 
@@ -118,9 +118,9 @@ namespace nc {
 
 	template<typename ... Components>
 	class Ecs {
-		friend Entity<Components...>;
+		friend EntityImpl<Components...>;
 	public:
-		using Entity = Entity<Components...>;
+		using Entity = EntityImpl<Components...>;
 		Ecs(std::uint64_t start_id = 0) : next_id{start_id} {}
 
 		Ecs(const Ecs &) = delete;
