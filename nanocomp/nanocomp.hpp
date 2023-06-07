@@ -177,15 +177,15 @@ namespace nc {
 
 
 		void run_system(auto && system) {
-			for(auto & entity : this->entities) {
-				system(*entity);
+			for(std::size_t i = 0; i < std::size(this->entities); ++i) {
+				system(*entities[i]);
 			}
 		}
 
 
 		void run_system(auto && system) const {
-			for(auto & entity : this->entities) {
-				system(std::as_const(*entity));
+			for(std::size_t i = 0; i < std::size(this->entities); ++i) {
+				system(std::as_const(*entities[i]));
 			}
 		}
 
