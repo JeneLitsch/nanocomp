@@ -182,18 +182,29 @@ namespace nc {
 
 
 
-		void run_system(auto && system) {
+		void run_system(auto && system, auto && ...args) {
 			for(std::size_t i = 0; i < std::size(this->entities); ++i) {
-				system(*entities[i]);
+				system(*entities[i], args...);
 			}
 		}
 
 
 
-
-		void run_system(auto && system) const {
+		void run_paired(auto && system, auto && ...args) {
 			for(std::size_t i = 0; i < std::size(this->entities); ++i) {
-				system(std::as_const(*entities[i]));
+				for(std::size_t k = 0; k < std::size(this->entities); ++k) {
+					if(i != k) {
+						system(*entities[i], *entities[k], args...);
+					}
+				}
+			}
+		}
+
+
+
+		void run_system(auto && system, auto && ...args) const {
+			for(std::size_t i = 0; i < std::size(this->entities); ++i) {
+				system(std::as_const(*entities[i]), args...);
 			}
 		}
 
