@@ -129,7 +129,13 @@ namespace nc {
 		Ecs & operator=(Ecs &&) = delete;
 
 		Entity & new_entity() {
-			const auto id = next_id++;
+			return new_entity(next_id);
+		}
+
+
+
+		Entity & new_entity(std::uint64_t id) {
+			this->next_id = std::max(id+1, this->next_id);
 			this->entities.push_back(std::make_unique<Entity>(id, *this));
 			this->by_id[id] = this->entities.back().get();
 			return *this->entities.back();
@@ -183,11 +189,15 @@ namespace nc {
 		}
 
 
+
+
 		void run_system(auto && system) const {
 			for(std::size_t i = 0; i < std::size(this->entities); ++i) {
 				system(std::as_const(*entities[i]));
 			}
 		}
+
+
 
 		void run_system_for(auto & order, auto && system) {
 			for(auto & id : order) {
@@ -196,11 +206,14 @@ namespace nc {
 		}
 
 
+
 		void run_system_for(auto & order, auto && system) const {
 			for(auto & id : order) {
 				system(std::as_const(get(id)));
 			}
 		}
+
+
 
 		~Ecs() {
 			this->entities.clear();
