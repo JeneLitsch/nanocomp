@@ -7,6 +7,7 @@
 #include <iostream>
 #include <utility>
 #include <algorithm>
+#include <cstdint>
 
 namespace nc {
 	template<typename ... Components>
