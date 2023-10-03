@@ -23,9 +23,7 @@ namespace nc {
 		EntityImpl & operator=(EntityImpl &&) = delete;
 
 		EntityImpl(std::uint64_t id, Ecs<Components...> & ecs) : id {id}, ecs{ecs} {}
-		~EntityImpl() {
-			ecs.by_id.erase(this->id);
-		}
+		~EntityImpl() {}
 
 		std::uint64_t get_id() const {
 			return this->id;
@@ -170,6 +168,12 @@ namespace nc {
 
 
 		void clean_up() {
+			for(const auto & entity : this->entities) {
+				if(entity->is_marked_delete()) {
+					this->by_id.erase(entity->get_id());
+				} 
+			}
+
 			// Move to expired entities to the end of the array
 			auto to_be_deleted = std::remove_if(
 				std::begin(entities),
