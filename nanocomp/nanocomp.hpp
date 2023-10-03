@@ -234,6 +234,12 @@ namespace nc {
 		~Ecs() {
 			this->entities.clear();
 		}
+
+
+
+		std::size_t size() const {
+			return std::size(this->entities);
+		}
 	private:
 		std::vector<std::unique_ptr<Entity>> entities;
 		std::unordered_map<std::uint64_t, Entity *> by_id;
